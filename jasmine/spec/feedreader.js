@@ -27,16 +27,36 @@ $(function() {
         });
 
 
-        /* TODO: Write a test that loops through each feed
+        /* Test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
+        it('have all feeds with defined non-empty URL', function () {
+            allFeeds.forEach(function(feed) {
+               expect(feed.url).toBeTruthy();
+            });
+        });
 
 
-        /* TODO: Write a test that loops through each feed
+        /* Test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+        it('have all feeds with defined non-empty name', function() {
+           allFeeds.forEach(function (feed) {
+              expect(feed.name).toBeTruthy();
+           });
+        });
+
+        /* Test that loops through each feed
+         * in the allFeeds object and ensures it has correct URL.
+         */
+        it('have all feeds with correct URL', function() {
+           allFeeds.forEach(function (feed) {
+               var urlRegExp = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/i;
+               expect(feed.url).toMatch(urlRegExp);
+           });
+        });
     });
 
 
