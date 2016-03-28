@@ -33,7 +33,8 @@ $(function() {
          */
         it('have all feeds with defined non-empty URL', function () {
             allFeeds.forEach(function(feed) {
-               expect(feed.url).toBeTruthy();
+                expect(feed.url).toBeDefined();
+                expect(feed.url.length).toBeGreaterThan(0);
             });
         });
 
@@ -44,7 +45,8 @@ $(function() {
          */
         it('have all feeds with defined non-empty name', function() {
            allFeeds.forEach(function (feed) {
-              expect(feed.name).toBeTruthy();
+               expect(feed.name).toBeDefined();
+               expect(feed.name.length).toBeGreaterThan(0)
            });
         });
 
@@ -109,16 +111,18 @@ $(function() {
         var initialFeed;
 
         beforeEach(function(done) {
-            //save the initial state and ensure feed was correctly loaded
-            initialFeedTitle = $('.header-title').html();
-            expect(initialFeedTitle).toMatch(allFeeds[0].name);
-            initialFeed = $('.feed').html();
-            expect($('.entry-link').length).toBeGreaterThan(0);
+            loadFeed(0, function() {
+                //save the initial state and ensure feed was correctly loaded
+                initialFeedTitle = $('.header-title').html();
+                expect(initialFeedTitle).toMatch(allFeeds[0].name);
+                initialFeed = $('.feed').html();
+                expect($('.entry-link').length).toBeGreaterThan(0);
 
-            //load different feed before checking the results in test
-            loadFeed(1, function() {
-                done();
-            });
+                //load different feed before checking the results in test
+                loadFeed(1, function () {
+                    done();
+                });
+            })
         });
 
         // restore the initial state
