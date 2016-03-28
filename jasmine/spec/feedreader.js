@@ -86,18 +86,55 @@ $(function() {
 
     describe('Initial Entries ', function () {
 
-        /* TODO: Write a test that ensures when the loadFeed
+        beforeEach(function(done) {
+            loadFeed(0, function() {
+                done();
+            });
+        });
+
+        /* Test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+        it('have at least one element in feed container', function() {
+            expect($('.entry-link').length).toBeGreaterThan(0);
+        });
     });
 
-    describe('New Feed Selection', function() {
-         /* TODO: Write a test that ensures when a new feed is loaded
+    describe('New Feed Selection ', function() {
+
+        var initialFeedTitle;
+        var initialFeed;
+
+        beforeEach(function(done) {
+            //save the initial state and ensure feed was correctly loaded
+            initialFeedTitle = $('.header-title').html();
+            expect(initialFeedTitle).toMatch(allFeeds[0].name);
+            initialFeed = $('.feed').html();
+            expect($('.entry-link').length).toBeGreaterThan(0);
+
+            //load different feed before checking the results in test
+            loadFeed(1, function() {
+                done();
+            });
+        });
+
+        // restore the initial state
+        afterEach(function() {
+           loadFeed(0);
+        });
+
+        /* Test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+        it('has changed the feed list after another feed selection ', function() {
+            expect(initialFeedTitle).not.toEqual($('.header-title').html());
+            expect($('.header-title').html()).toMatch(allFeeds[1].name);
+            expect($('.entry-link').length).toBeGreaterThan(0);
+            expect(initialFeed).not.toEqual($('.feed').html());
+        });
     });
 }());
